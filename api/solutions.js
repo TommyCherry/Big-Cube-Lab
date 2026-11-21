@@ -2,7 +2,7 @@ const {randomUUID,createHmac,timingSafeEqual} = require('node:crypto');
 const {hash,entryFor,validate,optimalFor} = require('../server/algorithms.cjs');
 const {community} = require('../server/community.cjs');
 function identity(req,res) {
-  const secret=process.env.VOTE_COOKIE_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN;
+  const secret=process.env.VOTE_COOKIE_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if(!secret) {const e=Error('Community voting is not connected yet. Optimal solutions are still available.');e.status=503;throw e;}
   const sign=id=>createHmac('sha256',secret).update(id).digest('hex');
   const value=(req.headers.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('l2c_voter='))?.slice(10)||'';

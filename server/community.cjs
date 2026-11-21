@@ -47,7 +47,7 @@ end
 return cjson.encode(result)
 `;
 async function redis(command) {
-  const url=process.env.UPSTASH_REDIS_REST_URL, token=process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url=process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL, token=process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!url || !token) { const error=Error('Community voting is not connected yet. Optimal solutions are still available.'); error.status=503; throw error; }
   const response=await fetch(url,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(command),signal:AbortSignal.timeout(8000)});
   if (!response.ok) throw Error('Database unavailable');

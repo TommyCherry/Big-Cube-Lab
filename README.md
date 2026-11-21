@@ -77,7 +77,8 @@ solver's setup-block grammar.
 
 1. In the L2C-Lab project, open **Storage** and connect a free Upstash Redis database.
 2. Ensure the project's server environment contains `UPSTASH_REDIS_REST_URL` and
-   `UPSTASH_REDIS_REST_TOKEN` (the full-access token, not the read-only token).
+   `UPSTASH_REDIS_REST_TOKEN`, or the Marketplace defaults `KV_REST_API_URL` and
+   `KV_REST_API_TOKEN` (the full-access token, not the read-only token).
 3. Redeploy after connecting. These variables stay server-side; never put them in HTML.
 4. Optionally set a stable random `VOTE_COOKIE_SECRET`; otherwise the Redis token
    signs anonymous cookies. Rotating that signing secret resets browser identities.

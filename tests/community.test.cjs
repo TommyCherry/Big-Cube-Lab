@@ -20,9 +20,9 @@ const result=searchExpandedSolutions({...config,start:config.encode(cases.stateO
 assert.equal(result.solutions.length,1);assert.equal(result.optimalCount,0);
 function response(){return {headers:{},setHeader(k,v){this.headers[k]=v;},status(n){this.code=n;return this;},json(data){this.data=data;return this;}};}
 (async()=>{
-  delete process.env.UPSTASH_REDIS_REST_TOKEN;delete process.env.VOTE_COOKIE_SECRET;
+  delete process.env.KV_REST_API_TOKEN;delete process.env.UPSTASH_REDIS_REST_TOKEN;delete process.env.VOTE_COOKIE_SECRET;
   let res=response();await handler({url:'/api/solutions?mode=redux&case=L2C-001',method:'GET',headers:{}},res);assert.equal(res.code,503);
-  process.env.VOTE_COOKIE_SECRET='test-only-secret';
+  process.env.KV_REST_API_TOKEN='test-only-marketplace-token';
   const first=response(), id=handler.identity({headers:{}},first);
   const cookie=first.headers['Set-Cookie'].split(';')[0];
   assert.equal(handler.identity({headers:{cookie}},response()),id);
