@@ -60,7 +60,26 @@
         }
         return colors;
       }
-      return { solved, parse, apply, visible };
+      function validateL2C(state, { yau = false } = {}) {
+        const home = solved();
+        // Sticker order retains identity even though non-U/F centers are drawn gray.
+        const same = (a, b) => a.every((v, i) => v === b[i]);
+        for (let i = 0; i < home.length; i++) {
+          const original = home[i], sticker = state[i];
+          const center = original.p.filter(v => Math.abs(v) === 2).length === 1;
+          if (center && original.color !== 'gray' && sticker.n[1] !== 1 && sticker.n[2] !== 1) {
+            throw new Error('Invalid L2C scramble: all green and orange center pieces must stay within the U and F centers.');
+          }
+          if (center && original.color === 'gray' && !same(original.n, sticker.n)) {
+            throw new Error('Invalid L2C scramble: the L, R, D, and B centers must remain solved on their original faces.');
+          }
+          if (yau && original.p[0] === -2 && original.p[1] !== 2 && original.p.filter(v => Math.abs(v) === 2).length === 2 && (!same(original.p, sticker.p) || !same(original.n, sticker.n))) {
+            throw new Error('Invalid Yau scramble: every piece of the FL, DL, and BL edges (F3E) must be preserved.');
+          }
+        }
+        return state;
+      }
+      return { solved, parse, apply, visible, validateL2C };
     })();
 
 if (typeof module !== "undefined") module.exports = CubeModel;

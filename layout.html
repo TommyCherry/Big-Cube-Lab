@@ -15,7 +15,7 @@
     <div class="panel cube-panel">
       <form class="scramble-form">
         <label for="cube-scramble">Scramble</label>
-        <textarea id="cube-scramble" rows="2" placeholder="Rw U2 F' Lw2 D Rw'" spellcheck="false" aria-describedby="cube-help cube-status"></textarea>
+        <textarea id="cube-scramble" rows="2" placeholder="e.g. Rw U Rw'" spellcheck="false" aria-describedby="cube-help cube-status"></textarea>
         <div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" id="random-l2c">Random L2C case</button></div>
         <details class="quiet-details"><summary>Notation help</summary><p class="help" id="cube-help">R, U, F, L, D, B; wide turns Rw or 3Rw; M (middle layer), Mw (middle three); ' or 2. Each Apply starts from the original colors.</p></details>
         <p class="status" id="cube-status" role="status" aria-live="polite"></p>
@@ -91,7 +91,7 @@
   <div class="solver-layout">
     <div class="panel cube-panel">
       <div class="six-case-filters" role="group" aria-label="Random scramble case filter"><button type="button" data-six-filter="all" aria-pressed="true">Any L2C</button><button type="button" data-six-filter="two" aria-pressed="false">Last two bars</button><button type="button" data-six-filter="one" aria-pressed="false">Last bar</button></div><p class="help">Random scramble filter: last two bars keeps the front center's two left columns orange; last bar keeps its three left columns orange.</p>
-      <form><label for="six-scramble">6x6 scramble</label><textarea id="six-scramble" rows="2" spellcheck="false" placeholder="Rw U Rw'"></textarea><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-six="random">Random L2C scramble</button><button type="button" data-six="example">Try short example</button></div><p class="help">R, U, F, L, D, B; Rw, 3Rw, 4Rw, 5Rw and other wide turns; primes and doubles. 2r through 5r turn individual inner layers from the right; 3r equals Rw' 3Rw. No single middle layer exists on 6x6, so M is not supported.</p></form>
+      <form><label for="six-scramble">6x6 scramble</label><textarea id="six-scramble" rows="2" spellcheck="false" placeholder="e.g. Rw U Rw'"></textarea><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-six="random">Random L2C scramble</button><button type="button" data-six="example">Try short example</button></div><p class="help">R, U, F, L, D, B; Rw, 3Rw, 4Rw, 5Rw and other wide turns; primes and doubles. 2r through 5r turn individual inner layers from the right; 3r equals Rw' 3Rw. No single middle layer exists on 6x6, so M is not supported.</p></form>
       <div class="cube-preview">
         <section class="face-group"><div class="face-label"><span>Top</span><span class="face-color">Green</span></div><div class="face six-face" data-six-face="U" role="img"></div></section>
         <section class="face-group"><div class="face-label"><span>Front</span><span class="face-color">Orange</span></div><div class="face six-face" data-six-face="F" role="img"></div></section>

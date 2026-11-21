@@ -217,7 +217,7 @@
     <div class="panel cube-panel">
       <form class="scramble-form">
         <label for="cube-scramble">Scramble</label>
-        <textarea id="cube-scramble" rows="2" placeholder="Rw U2 F' Lw2 D Rw'" spellcheck="false" aria-describedby="cube-help cube-status"></textarea>
+        <textarea id="cube-scramble" rows="2" placeholder="e.g. Rw U Rw'" spellcheck="false" aria-describedby="cube-help cube-status"></textarea>
         <div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" id="random-l2c">Random L2C case</button></div>
         <details class="quiet-details"><summary>Notation help</summary><p class="help" id="cube-help">R, U, F, L, D, B; wide turns Rw or 3Rw; M (middle layer), Mw (middle three); ' or 2. Each Apply starts from the original colors.</p></details>
         <p class="status" id="cube-status" role="status" aria-live="polite"></p>
@@ -293,7 +293,7 @@
   <div class="solver-layout">
     <div class="panel cube-panel">
       <div class="six-case-filters" role="group" aria-label="Random scramble case filter"><button type="button" data-six-filter="all" aria-pressed="true">Any L2C</button><button type="button" data-six-filter="two" aria-pressed="false">Last two bars</button><button type="button" data-six-filter="one" aria-pressed="false">Last bar</button></div><p class="help">Random scramble filter: last two bars keeps the front center's two left columns orange; last bar keeps its three left columns orange.</p>
-      <form><label for="six-scramble">6x6 scramble</label><textarea id="six-scramble" rows="2" spellcheck="false" placeholder="Rw U Rw'"></textarea><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-six="random">Random L2C scramble</button><button type="button" data-six="example">Try short example</button></div><p class="help">R, U, F, L, D, B; Rw, 3Rw, 4Rw, 5Rw and other wide turns; primes and doubles. 2r through 5r turn individual inner layers from the right; 3r equals Rw' 3Rw. No single middle layer exists on 6x6, so M is not supported.</p></form>
+      <form><label for="six-scramble">6x6 scramble</label><textarea id="six-scramble" rows="2" spellcheck="false" placeholder="e.g. Rw U Rw'"></textarea><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-six="random">Random L2C scramble</button><button type="button" data-six="example">Try short example</button></div><p class="help">R, U, F, L, D, B; Rw, 3Rw, 4Rw, 5Rw and other wide turns; primes and doubles. 2r through 5r turn individual inner layers from the right; 3r equals Rw' 3Rw. No single middle layer exists on 6x6, so M is not supported.</p></form>
       <div class="cube-preview">
         <section class="face-group"><div class="face-label"><span>Top</span><span class="face-color">Green</span></div><div class="face six-face" data-six-face="U" role="img"></div></section>
         <section class="face-group"><div class="face-label"><span>Front</span><span class="face-color">Orange</span></div><div class="face six-face" data-six-face="F" role="img"></div></section>
@@ -372,7 +372,26 @@
         }
         return colors;
       }
-      return { solved, parse, apply, visible };
+      function validateL2C(state, { yau = false } = {}) {
+        const home = solved();
+        // Sticker order retains identity even though non-U/F centers are drawn gray.
+        const same = (a, b) => a.every((v, i) => v === b[i]);
+        for (let i = 0; i < home.length; i++) {
+          const original = home[i], sticker = state[i];
+          const center = original.p.filter(v => Math.abs(v) === 2).length === 1;
+          if (center && original.color !== 'gray' && sticker.n[1] !== 1 && sticker.n[2] !== 1) {
+            throw new Error('Invalid L2C scramble: all green and orange center pieces must stay within the U and F centers.');
+          }
+          if (center && original.color === 'gray' && !same(original.n, sticker.n)) {
+            throw new Error('Invalid L2C scramble: the L, R, D, and B centers must remain solved on their original faces.');
+          }
+          if (yau && original.p[0] === -2 && original.p[1] !== 2 && original.p.filter(v => Math.abs(v) === 2).length === 2 && (!same(original.p, sticker.p) || !same(original.n, sticker.n))) {
+            throw new Error('Invalid Yau scramble: every piece of the FL, DL, and BL edges (F3E) must be preserved.');
+          }
+        }
+        return state;
+      }
+      return { solved, parse, apply, visible, validateL2C };
     })();
 
 if (typeof module !== "undefined") module.exports = CubeModel;
@@ -2635,6 +2654,7 @@ const YAU_DATABASE = {"version":2,"equivalence":"independent U and F rotations",
             const scramble = solution.moves.split(' ').reverse().map(token => token.endsWith('2') ? token : token.endsWith("'") ? token.slice(0, -1) : token + "'").join(' ');
             try {
               const state = CubeModel.apply(CubeModel.solved(), CubeModel.parse(scramble));
+              CubeModel.validateL2C(state, { yau: Boolean(yauSolver) });
               solver.encode(state);
               if (JSON.stringify(expandedSolver.encode(state)) !== JSON.stringify(start)) throw new Error('The generated scramble did not reproduce its target layout.');
               current = state;
@@ -2743,7 +2763,9 @@ const YAU_DATABASE = {"version":2,"equivalence":"independent U and F rotations",
         const status = root.querySelector('.status');
         try {
           const moves = CubeModel.parse(input.value);
-          current = CubeModel.apply(CubeModel.solved(), moves);
+          const next = CubeModel.apply(CubeModel.solved(), moves);
+          CubeModel.validateL2C(next, { yau: Boolean(yauSolver) });
+          current = next;
           stopSearch();
           results.replaceChildren();
           solverStatus.textContent = '';
