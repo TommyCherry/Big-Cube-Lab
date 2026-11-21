@@ -117,6 +117,12 @@ function mountTrainer(root, database, model, actions = {}) {
   const status = find('.trainer-status'), sessionSelect = find('[data-trainer="session"]');
   const lastButton = find('[data-trainer="remove-last"]');
   const answer = find('.trainer-answer');
+  let solutionCase = null, disposeSolutions = null;
+  answer.addEventListener('toggle', () => {
+    if (!answer.open || !state.current || !actions.solutions || solutionCase === state.current.caseId) return;
+    disposeSolutions?.(); solutionCase = state.current.caseId;
+    disposeSolutions = actions.solutions(find('.trainer-solutions'), database.cases.find(c => c.id === solutionCase));
+  });
   const storageKey = database.mode === 'yau' ? 'l2c-trainer-yau-v1' : 'l2c-trainer-v1';
   let saved = {}, storageError = false;
   try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}') || {}; } catch { storageError = true; }
@@ -174,7 +180,7 @@ function mountTrainer(root, database, model, actions = {}) {
       link.addEventListener('click', () => actions.openCase?.(caseId));
       currentHeading.append(label, link);
     } else currentHeading.textContent = 'No case selected';
-    if (previousScramble !== state.current?.scramble) { previousScramble = state.current?.scramble; answer.open = false; drawDiagram(); }
+    if (previousScramble !== state.current?.scramble) { previousScramble = state.current?.scramble; answer.open = false; disposeSolutions?.(); solutionCase = null; drawDiagram(); }
     answer.hidden = !state.current || state.running;
     find('.trainer-alignment').textContent = state.current ? 'First align: ' + (state.current.alignment || 'No adjustment needed') : '';
     find('.trainer-algorithm').textContent = state.current?.optimalAlgorithm || '';

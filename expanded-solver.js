@@ -187,7 +187,7 @@ function solutionEffectKey(path) {
   return permutation.join(',');
 }
 
-function searchExpandedSolutions({ moves, goal, start, startVariants, goalVariants, unrestricted = false, colorCount = 2, blockRules, nearOptimal = false, resultLimit = 5 }, progress = () => {}) {
+function searchExpandedSolutions({ moves, goal, start, startVariants, goalVariants, unrestricted = false, colorCount = 2, blockRules, nearOptimal = false, optimalOnly = false, resultLimit = 5 }, progress = () => {}) {
   const moveCount = moves.length;
   const masks = [];
   for (let a = 0; a < 24; a++) for (let b = a + 1; b < 24; b++)
@@ -274,6 +274,7 @@ function searchExpandedSolutions({ moves, goal, start, startVariants, goalVarian
   const solutions = [], seen = new Set(), path = [];
   let visited = 0, optimalCount = null, activeVariant = 0;
   for (let bound = Math.min(...initials.map(heuristic)); solutions.length < (nearOptimal ? 1 : resultLimit); bound++) {
+    if (optimalOnly && optimalCount !== null && bound > optimalCount) break;
     if (nearOptimal && optimalCount !== null && bound > optimalCount + 2) break;
     progress(nearOptimal && optimalCount !== null
       ? `Optimal is ${optimalCount} moves. Finding a ${bound}-move setup solution...`

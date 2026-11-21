@@ -181,3 +181,13 @@
 #cube-centers .six-case-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 #cube-centers .six-case-filters [aria-pressed="true"] { background: var(--accent); color: var(--surface); border-color: var(--accent); }
 #cube-centers .six-case-filters + .help { margin-bottom: 12px; }
+#cube-centers .community-solutions { display: grid; gap: 16px; margin-top: 14px; }
+#cube-centers .community-solutions section { display: grid; gap: 8px; min-width: 0; }
+#cube-centers .community-solutions ol { margin: 0; padding-left: 24px; }
+#cube-centers .community-solutions li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+#cube-centers .community-solutions .case-algorithm { display: block; margin: 0 0 6px; overflow-wrap: anywhere; }
+#cube-centers .algorithm-vote-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#cube-centers .community-solutions button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+#cube-centers .community-solutions form, #cube-centers .community-solutions label { display: grid; gap: 8px; }
+#cube-centers .community-solutions textarea { width: 100%; min-height: 70px; }
+#cube-centers .community-solutions > button, #cube-centers .community-solutions form > button { justify-self: start; }

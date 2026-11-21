@@ -9,6 +9,7 @@ function mountCaseBrowser(root, database, model, actions) {
   const previous = section.querySelector('[data-page="previous"]');
   const next = section.querySelector('[data-page="next"]');
   let page = 0, selected = null, matchingMask = null;
+  const solutionDisposers = new WeakMap();
   const pageSize = 24;
   const selectedCounts = new Set();
   const countOptions = section.querySelector('.move-count-options');
@@ -66,6 +67,7 @@ function mountCaseBrowser(root, database, model, actions) {
     const detail = target;
     if (!popup) selected = entry.id;
     detail.hidden = false;
+    solutionDisposers.get(detail)?.();
     detail.replaceChildren();
     const title = document.createElement('h3'); title.textContent = entry.id + (entry.count === 0 ? ' | Solved' : '');
     const description = document.createElement('p');
@@ -95,6 +97,11 @@ function mountCaseBrowser(root, database, model, actions) {
       showDetail(entry);
     });
     detail.append(labels, blocks);
+    if (actions.solutions) {
+      algorithm.hidden = true;
+      const solutions = document.createElement('div'); detail.append(solutions);
+      solutionDisposers.set(detail, actions.solutions(solutions, entry));
+    }
     if (actions.practice && actions.practice.allowed(entry.id)) {
       const practice = document.createElement('button'); practice.type = 'button'; practice.dataset.practiceToggle = entry.id;
       practice.textContent = actions.practice.has(entry.id) ? 'Remove from practice' : 'Add to practice';
