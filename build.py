@@ -13,7 +13,7 @@ _, after = rest.split(end, 1)
 before = before[:before.index('    const CubeModel =')] + (root / 'cube-model.js').read_text(encoding='utf-8')
 database = json.loads((root / 'data/l2c-cases.json').read_text(encoding='utf-8'))
 yau_database = json.loads((root / 'data/yau-cases.json').read_text(encoding='utf-8'))
-scripts = '\n'.join((root / name).read_text(encoding='utf-8') for name in ['solver.js', 'expanded-solver.js', 'case-library.js', 'case-browser.js', 'community-solutions.js', 'yau.js', 'trainer.js', 'workspace.js', 'mode-transfer.js', 'six-ida.js', 'six-cache.js', 'six-notation.js', 'six.js'])
+scripts = '\n'.join((root / name).read_text(encoding='utf-8') for name in ['solver.js', 'expanded-solver.js', 'case-library.js', 'case-browser.js', 'community-solutions.js', 'yau.js', 'trainer.js', 'workspace.js', 'mode-transfer.js', 'six-ida.js', 'six-cache.js', 'six-notation.js', 'six.js', 'four.js'])
 alternatives = json.loads((root / 'data/optimal-alternatives.json').read_text())
 scripts += '\nconst OPTIMAL_ALTERNATIVES = ' + json.dumps(alternatives, separators=(',', ':')) + ';\n'
 fragment = before + start + '\n' + scripts + '\nconst L2C_DATABASE = ' + json.dumps(database, separators=(',', ':')) + ';\nconst YAU_DATABASE = ' + json.dumps(yau_database, separators=(',', ':')) + ';\n' + end + after

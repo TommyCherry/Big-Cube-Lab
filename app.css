@@ -191,3 +191,8 @@
 #cube-centers .community-solutions form, #cube-centers .community-solutions label { display: grid; gap: 8px; }
 #cube-centers .community-solutions textarea { width: 100%; min-height: 70px; }
 #cube-centers .community-solutions > button, #cube-centers .community-solutions form > button { justify-self: start; }
+
+#cube-centers .four-preview { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
+#cube-centers .four-face { grid-template-columns: repeat(4, 1fr); width: 100%; max-width: 220px; }
+#cube-centers .four-results { display: grid; gap: 10px; margin-top: 14px; }
+#cube-centers .workspace-nav { flex-wrap: wrap; }

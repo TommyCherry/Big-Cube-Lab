@@ -1,5 +1,5 @@
 <header class="app-header">
-  <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h1>L2C Lab</h1><p>5x5 and 6x6 center practice</p></div></div>
+  <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h1>L2C Lab</h1><p>4x4, 5x5 and 6x6 center practice</p></div></div>
   <label class="mode-select">5x5 method <select id="method-mode" aria-label="Method mode"><option value="redux">Redux mode</option><option value="yau">Yau mode</option></select></label>
 </header>
 <p id="method-description" class="help">Redux mode: center solutions without F3E restrictions.</p>
@@ -8,6 +8,7 @@
   <button type="button" id="tab-trainer" role="tab" aria-controls="trainer" aria-selected="false" tabindex="-1" data-view="trainer">Trainer</button>
   <button type="button" id="tab-library" role="tab" aria-controls="case-library" aria-selected="false" tabindex="-1" data-view="case-library">Case library</button>
   <button type="button" id="tab-six" role="tab" aria-controls="six-solver" aria-selected="false" tabindex="-1" data-view="six-solver">6x6 solver</button>
+  <button type="button" id="tab-four" role="tab" aria-controls="four-solver" aria-selected="false" tabindex="-1" data-view="four-solver">4x4 L4C Yau</button>
 </nav>
 <section id="solver-view" class="workspace-panel" role="tabpanel" aria-labelledby="tab-solver">
   <div class="view-heading"><div><h2>Explore a case</h2><p>Apply a scramble and find your shortest solution.</p></div><a class="text-link" href="#case-library">Browse the library</a></div>
@@ -102,6 +103,27 @@
       <div class="solver-actions"><button type="button" class="primary" data-six="solve">Find optimal solution</button><button type="button" data-six="prepare">Prepare tables</button><button type="button" data-six="cancel" hidden>Cancel</button></div>
       <p class="six-cache-status help">Pattern tables are reused across scrambles and saved separately for each move set. Prepare them ahead of time, or let the first deeper search build them.</p><p class="six-status" role="status" aria-live="polite">Apply a short scramble to start.</p><div class="six-result"></div>
       <details class="quiet-details" open><summary>Prototype scope and limits</summary><p class="help">Redux searches U, F, Rw, 3Rw, 4Rw, 5Rw, Lw, 3Lw, 4Lw, and 5Lw. Yau searches U, Rw, 3Rw, 4Rw, and 5Rw. Both include primes and doubles, each costing one move. A result is shortest within that move set, not all cube moves. Yau preserves all FL/DL/BL edge pieces as they are when search starts.</p><p class="help">All six centers must return to their original faces. Edges and corners are not solved. IDA* uses exact small pattern tables to prune paths and avoids retaining the entire search frontier. Search stops at the chosen depth or time limit. There is no state cap; Cancel remains available. Longer scrambles can exceed these limits. No case database is generated.</p><p class="help">Ergonomic search uses setup + U/U'/U2 + inverse setup blocks, with standalone U adjustments before, between, or after blocks. Setups are Rw through 5Rw or individual slices 2r through 5r, with primes allowed. Each slice counts as one move; adjacent wide/slice turns are combined when possible. An optional final commutator solves the last exchanged oblique pair, including verified symmetric/inverse variants and U/F alignment. In Yau, F actions use safe wide-turn equivalents. It minimizes written moves after adjacent turns combine, including across the final commutator boundary, not the number of blocks. This is optimal within those blocks and the supported finishing commutators; its slice-turn move set differs from the ordinary move-optimal search.</p></details>
+    </section>
+  </div>
+</section>
+
+<section id="four-solver" class="workspace-panel" role="tabpanel" aria-labelledby="tab-four" hidden>
+  <div class="view-heading"><div><h2>4x4 L4C - Yau</h2><p>Two-phase prototype: build three half centers, then finish.</p></div></div>
+  <div class="solver-layout">
+    <div class="panel cube-panel">
+      <form><label for="four-scramble">4x4 scramble</label><textarea id="four-scramble" rows="2" spellcheck="false" placeholder="e.g. Rw U 3Rw U' 3Rw' Rw'"></textarea><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-four="example">Try short example</button></div><p class="help">Rw, 3Rw and U only; primes and doubles allowed. These moves preserve the L/R centers and all FL, DL and BL edge pieces. Start from solved centers.</p></form>
+      <div class="four-preview">
+<section class="face-group"><div class="face-label"><span>Top</span><span class="face-color">Green</span></div><div class="face four-face" data-four-face="U" role="img"></div></section>
+<section class="face-group"><div class="face-label"><span>Front</span><span class="face-color">Orange</span></div><div class="face four-face" data-four-face="F" role="img"></div></section>
+<section class="face-group"><div class="face-label"><span>Down</span><span class="face-color">Blue</span></div><div class="face four-face" data-four-face="D" role="img"></div></section>
+<section class="face-group"><div class="face-label"><span>Back</span><span class="face-color">Red</span></div><div class="face four-face" data-four-face="B" role="img"></div></section>
+      </div><p class="preview-caption">Views look straight at each face. BL is the cube-left bar, shown on the right of the Back diagram. Gray stickers are outside the four active centers.</p>
+    </div>
+    <section class="panel"><h3>Two-phase search</h3>
+      <div class="case-filters"><label>Maximum total moves<input type="number" data-four="depth" min="0" max="24" value="14"></label><label>Time limit<select data-four="seconds"><option value="10">10 seconds</option><option value="30" selected>30 seconds</option><option value="60">1 minute</option></select></label></div>
+      <div class="solver-actions"><button type="button" class="primary" data-four="solve">Find solution</button><button type="button" data-four="cancel" hidden>Cancel</button></div>
+      <p class="four-status" role="status" aria-live="polite">Apply a short scramble to start.</p><div class="four-results"></div>
+      <details class="quiet-details" open><summary>How this prototype searches</summary><p class="help">Phase 1 makes the correct-color FL, DL and BL vertical center bars. Phase 2 uses Rw and U to solve the remaining centers without disturbing those bars. An exact phase-2 table is combined with an iterative-deepening phase-1 search and admissible single-color bounds. The search minimizes total moves across both phases, rather than independently choosing the shortest first phase. Either phase may be empty. A completed result is optimal in Rw/3Rw/U; hitting a time or depth limit is not a proof. Longer cases can exceed the prototype's limits.</p></details>
     </section>
   </div>
 </section>

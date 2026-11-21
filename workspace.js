@@ -1,7 +1,7 @@
 function mountWorkspace(root) {
   const tabs = [...root.querySelectorAll('[data-view]')];
   const panels = new Map(tabs.map(tab => [tab.dataset.view, root.querySelector('#' + tab.dataset.view)]));
-  const hashes = { '#solver': 'solver-view', '#trainer': 'trainer', '#case-library': 'case-library', '#six': 'six-solver' };
+  const hashes = { '#solver': 'solver-view', '#trainer': 'trainer', '#case-library': 'case-library', '#six': 'six-solver', '#four': 'four-solver' };
   function show(id, { scroll = true, updateHash = true } = {}) {
     if (!panels.has(id)) return;
     for (const tab of tabs) {

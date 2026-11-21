@@ -103,3 +103,24 @@ To regenerate and replay-verify the optimal alternatives after solver changes:
 node scripts/generate-optimal-alternatives.cjs
 python3 build.py
 ```
+
+
+## 4x4 L4C Yau prototype
+
+Open the **4x4 L4C Yau** tab (or `/#four`). Input accepts only `Rw`, `3Rw`,
+`U`, primes, and doubles; each costs one move. All these turns preserve the
+L/R centers and every FL/DL/BL edge piece.
+
+Phase 1 targets the correct-color cube-left bars on F, D, and B. Phase 2 uses
+Rw/U only, preserving those bars. The prototype builds the exact 18,900-state
+phase-2 distance table and searches prefixes in increasing **total** solution
+length, using admissible single-color bounds. It considers different phase-1
+endpoints rather than greedily accepting the shortest first phase. Either phase
+can be empty; a full optimal solution can also be the phase-1 prefix, so the
+search does not exclude shorter solutions that do not enter phase 2 earlier.
+
+Returned solutions are shortest within this nine-turn move set, not all cube
+moves. Time/depth limits return an incomplete result, never an optimality claim.
+The worker keeps the interface responsive and can be cancelled. Use the phase
+preview buttons to inspect the three bars and the solved result. This is an
+initial implementation, without a case library or deep-case performance guarantee.

@@ -1,7 +1,7 @@
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 const source = fs.readFileSync(`${__dirname}/../workspace.js`, 'utf8');
 const layout = fs.readFileSync(`${__dirname}/../layout.html`, 'utf8');
-const tabs = ['solver-view', 'trainer', 'case-library', 'six-solver'].map(id => ({ dataset: { view: id }, attrs: {}, events: {}, setAttribute(k, v) { this.attrs[k] = v; }, addEventListener(k, fn) { this.events[k] = fn; }, focus() { this.focused = true; } }));
+const tabs = ['solver-view', 'trainer', 'case-library', 'six-solver', 'four-solver'].map(id => ({ dataset: { view: id }, attrs: {}, events: {}, setAttribute(k, v) { this.attrs[k] = v; }, addEventListener(k, fn) { this.events[k] = fn; }, focus() { this.focused = true; } }));
 const panels = Object.fromEntries(tabs.map(t => [t.dataset.view, { hidden: false }]));
 const links = ['#trainer', '#case-library'].map(href => ({ events: {}, getAttribute() { return href; }, addEventListener(k, fn) { this.events[k] = fn; } }));
 const root = { dataset: {}, querySelectorAll: selector => selector === '[data-view]' ? tabs : links, querySelector: selector => panels[selector.slice(1)], scrollIntoView() {} };
@@ -19,6 +19,7 @@ links[1].events.click({ preventDefault() {} }); assert.equal(panels['case-librar
 workspace.show('solver-view'); assert.equal(location.hash, '#solver');
 location.hash = '#trainer'; events.hashchange(); assert.equal(panels.trainer.hidden, false);
 workspace.show('six-solver'); assert.equal(location.hash, '#six'); assert.equal(panels['six-solver'].hidden, false);
+workspace.show('four-solver'); assert.equal(location.hash, '#four'); assert.equal(panels['four-solver'].hidden, false);
 for (const tab of tabs) assert.ok(layout.includes(`id="${tab.dataset.view}"`));
 assert.ok(layout.includes('class="cube-preview"'));
 console.log('Passed: independent views, deep links, keyboard tab navigation, and programmatic navigation.');
