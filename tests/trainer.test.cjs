@@ -51,10 +51,10 @@ class Element {
   closest() { return ['input', 'textarea', 'select', 'a', 'summary'].includes(this.tag) || this.tag === 'button' && this.className !== 'trainer-clock' ? this : null; }
 }
 const storage = new Map();
-let openedCase;
+let openedCase, solutionsCase, solutionMounts = 0, solutionDisposals = 0;
 function controller() {
   const elements = {}, listeners = {}, root = new Element(), section = new Element();
-  const selectors = ['.trainer-clock', '.trainer-status', '.trainer-answer', '.trainer-storage', '.trainer-diagram', '.trainer-pool-count', '.trainer-scramble', '.trainer-current', '.trainer-algorithm', '.trainer-alignment', '.trainer-solution-count', '.trainer-last', '.trainer-history', '.trainer-history-label', '.trainer-rating', '.trainer-rating-title', '.trainer-review-stats'];
+  const selectors = ['.trainer-clock', '.trainer-status', '.trainer-answer', '.trainer-solutions', '.trainer-storage', '.trainer-diagram', '.trainer-pool-count', '.trainer-scramble', '.trainer-current', '.trainer-algorithm', '.trainer-alignment', '.trainer-solution-count', '.trainer-last', '.trainer-history', '.trainer-history-label', '.trainer-rating', '.trainer-rating-title', '.trainer-review-stats'];
   for (const rating of [1, 2, 3, 4]) selectors.push(`[data-rating="${rating}"]`);
   for (const name of ['spaced', 'skip-rating', 'enabled', 'session', 'remove-last', 'skip', 'new-session', 'undo', 'select-all', 'select-none']) selectors.push(`[data-trainer="${name}"]`);
   for (const name of ['count', 'best', 'mean', 'ao5', 'ao12']) selectors.push(`[data-stat="${name}"]`);
@@ -67,7 +67,7 @@ function controller() {
     window: { addEventListener: (name, fn) => { listeners[name] = fn; } },
     performance: { now: () => now }, requestAnimationFrame: () => 1, cancelAnimationFrame: () => {},
     localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) }
-  })(root, database, model, { openCase(id) { openedCase = id; } });
+  })(root, database, model, { openCase(id) { openedCase = id; }, solutions(target, entry) { assert.equal(target, elements['.trainer-solutions']); solutionsCase = entry.id; solutionMounts++; return () => solutionDisposals++; } });
   const key = (name, target = new Element(), repeat = false) => {
     let prevented = false;
     listeners[name]({ code: 'Space', target, repeat, preventDefault() { prevented = true; } });
@@ -88,8 +88,14 @@ assert.equal(get('.trainer-answer').hidden, false);
 assert.ok(get('.trainer-algorithm').textContent);
 assert.match(get('.trainer-solution-count').textContent, /optimal moves/);
 get('.trainer-answer').open = true;
+get('.trainer-answer').trigger('toggle');
+assert.equal(solutionsCase, currentCaseLink.textContent);
+assert.equal(solutionMounts, 1);
+get('.trainer-answer').trigger('toggle');
+assert.equal(solutionMounts, 1);
 get('[data-trainer="skip"]').trigger('click');
 assert.equal(get('.trainer-answer').open, false);
+assert.ok(solutionDisposals >= 1);
 get('[data-trainer="enabled"]').checked = true;
 ui.section.hidden = true;
 assert.equal(ui.key('keydown'), false);
