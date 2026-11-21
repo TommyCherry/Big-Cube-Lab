@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": "output",
+  "rewrites": [
+    { "source": "/", "destination": "/cube-interface.html" },
+    { "source": "/output/cube-interface.html", "destination": "/cube-interface.html" },
+    { "source": "/output/cube-centers.html", "destination": "/cube-centers.html" }
+  ]
+}

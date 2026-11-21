@@ -50,3 +50,9 @@ Some exhaustive solver tests take a while. Bidirectional BFS exists only as an i
 Keep both files in `output/` in the repository: `build.py` also reads the bootstrap/model code outside the generated markers in `output/cube-centers.html`.
 
 Optimality is within the selected search grammar and move-count convention. A time/depth limit does not establish an optimal solution or imply that a case is unsolvable.
+
+## Vercel deployment
+
+Import this repository with the repository root as the Root Directory. The checked-in `vercel.json` serves the prebuilt `output/` directory and maps `/` to `cube-interface.html`. No hosting build step is required.
+
+After source changes, run `python3 build.py` and commit both generated HTML files before pushing. Vercel can then deploy the updated app automatically from `main`.
