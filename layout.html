@@ -1,13 +1,39 @@
 <header class="app-header">
-  <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h1>L2C Lab</h1><p>4x4, 5x5 and 6x6 center practice</p></div></div>
+  <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h1>Big Cube Lab</h1><p>Center solving, edge pairing, and practice for big cubes</p></div></div>
 </header>
-<nav class="workspace-nav" role="tablist" aria-label="Workspace">
-  <button type="button" id="tab-solver" role="tab" aria-controls="solver-view" aria-selected="true" data-view="solver-view">5x5 solver</button>
-  <button type="button" id="tab-trainer" role="tab" aria-controls="trainer" aria-selected="false" tabindex="-1" data-view="trainer">5x5 trainer</button>
-  <button type="button" id="tab-library" role="tab" aria-controls="case-library" aria-selected="false" tabindex="-1" data-view="case-library">5x5 case library</button>
-  <button type="button" id="tab-six" role="tab" aria-controls="six-solver" aria-selected="false" tabindex="-1" data-view="six-solver">6x6 solver</button>
-  <button type="button" id="tab-four" role="tab" aria-controls="four-solver" aria-selected="false" tabindex="-1" data-view="four-solver">4x4 L4C Yau</button>
+<nav class="workspace-nav" role="tablist" aria-label="Big cube tools">
+  <div class="workspace-nav-group" role="presentation">
+    <span class="workspace-nav-label" aria-hidden="true">4x4</span>
+    <div class="workspace-nav-tabs" role="presentation">
+      <button type="button" id="tab-four" role="tab" aria-label="4x4 L4C Yau" aria-controls="four-solver" aria-selected="false" tabindex="-1" data-view="four-solver">L4C Yau</button>
+      <button type="button" id="tab-f3e" role="tab" aria-label="4x4 F3E Yau" aria-controls="f3e-solver" aria-selected="false" tabindex="-1" data-view="f3e-solver">F3E Yau</button>
+      <button type="button" id="tab-l8e" role="tab" aria-label="4x4 L8E solver" aria-controls="l8e-solver" aria-selected="false" tabindex="-1" data-view="l8e-solver">L8E solver</button>
+      <button type="button" id="tab-l8e-examples" role="tab" aria-label="4x4 L8E examples" aria-controls="l8e-examples" aria-selected="false" tabindex="-1" data-view="l8e-examples">L8E examples</button>
+    </div>
+  </div>
+  <div class="workspace-nav-group" role="presentation">
+    <span class="workspace-nav-label" aria-hidden="true">5x5</span>
+    <div class="workspace-nav-tabs" role="presentation">
+      <button type="button" id="tab-solver" role="tab" aria-label="5x5 L2C solver" aria-controls="solver-view" aria-selected="true" data-view="solver-view">L2C solver</button>
+      <button type="button" id="tab-trainer" role="tab" aria-label="5x5 L2C trainer" aria-controls="trainer" aria-selected="false" tabindex="-1" data-view="trainer">L2C trainer</button>
+      <button type="button" id="tab-library" role="tab" aria-label="5x5 Case library" aria-controls="case-library" aria-selected="false" tabindex="-1" data-view="case-library">Case library</button>
+    </div>
+  </div>
+  <div class="workspace-nav-group" role="presentation">
+    <span class="workspace-nav-label" aria-hidden="true">6x6</span>
+    <div class="workspace-nav-tabs" role="presentation">
+      <button type="button" id="tab-six" role="tab" aria-label="6x6 L2C solver" aria-controls="six-solver" aria-selected="false" tabindex="-1" data-view="six-solver">L2C solver</button>
+    </div>
+  </div>
 </nav>
+
+<section class="color-orientation panel" data-color-orientation aria-label="Cube colors and orientation">
+  <div><h3>Colors and orientation</h3><p class="help">Choose the colors you hold on top and in front. Applies to every page. L2C stays on U/F; L4C stays on U/F/D/B. F3E uses the cross color on L; L8E uses the cross color on D.</p></div>
+  <div class="orientation-options"><label>Top (U) color<select data-orientation="up"><option value="green">Green</option><option value="orange">Orange</option><option value="blue">Blue</option><option value="red">Red</option><option value="white">White</option><option value="yellow">Yellow</option></select></label><label>Front (F) color<select data-orientation="front"><option value="green">Green</option><option value="orange">Orange</option><option value="blue">Blue</option><option value="red">Red</option><option value="white">White</option><option value="yellow">Yellow</option></select></label><button type="button" data-orientation="reset">Reset colors</button></div>
+  <p class="help" data-orientation="summary" role="status" aria-live="polite"></p>
+  <p class="help">Opposite colors: white/yellow, green/blue, red/orange. Moves are relative to this grip. Changing colors recolors the current case; it does not apply a cube move.</p>
+</section>
+
 <section class="five-controls" aria-label="5x5 method settings">
   <label class="mode-select">5x5 method <select id="method-mode" aria-label="5x5 method"><option value="redux">Redux mode</option><option value="yau">Yau mode</option></select></label>
 <p id="method-description" class="help">Redux mode: center solutions without F3E restrictions.</p>
@@ -120,7 +146,7 @@
         <section class="face-group"><div class="face-label">D <span>Down</span></div><div class="face four-face" data-four-face="D" role="img"></div></section>
         <section class="face-group"><div class="face-label">B <span>Back</span></div><div class="face four-face" data-four-face="B" role="img"></div></section>
       </div>
-      <p class="preview-caption">Centers only, from top to bottom: U, F, D, B. Each 2x2 is viewed straight on; the BL center bar is on the right of B.</p>
+      <p class="preview-caption">Centers only, from top to bottom: U, F, D, B. B is mirrored left/right so the FL, DL and BL center bars all appear on the left.</p>
     </div>
     <section class="panel four-search"><h3>Find a solution</h3>
       <label>Solution approach<select data-four="mode" aria-describedby="four-mode-help"><option value="half">Half centers</option><option value="first-center">Full 1st center</option><option value="global" selected>Globally optimal</option></select></label>
@@ -129,6 +155,129 @@
       <div class="solver-actions"><button type="button" class="primary" data-four="solve">Find solution</button><button type="button" data-four="cancel" hidden>Cancel</button></div>
       <p class="four-status" role="status" aria-live="polite">Apply a short scramble to start.</p><div class="four-results"></div>
       <details class="quiet-details"><summary>Search rules and optimality</summary><p class="help">Each Rw, 3Rw, l or U turn counts as one move, including primes and doubles. Half centers and Full 1st center minimize stage 1 first, select the first shortest route found, then minimize the finish from that endpoint. Tied stage-1 routes are not ranked by their finish length. Half centers accepts all four cyclic color arrangements around the fixed L/R axis and preserves the three bars during its Rw/U finish; the solved orientation is shown with the result. Full 1st center chooses whichever center can be solved quickest in its original face position; its finish can temporarily disturb it. Globally optimal minimizes the whole solution to the original face colors without requiring either milestone first. Cancelling stops the search without an optimality result.</p></details>
+    </section>
+  </div>
+</section>
+
+<section id="f3e-solver" class="workspace-panel" role="tabpanel" aria-labelledby="tab-f3e" hidden>
+  <div class="view-heading"><div><h2>4x4 F3E - Yau</h2><p>Build three paired white edges in the correct relative order.</p></div></div>
+  <div class="solver-layout f3e-layout">
+    <div class="panel cube-panel">
+      <form class="scramble-form">
+        <label for="f3e-scramble">F3E scramble</label>
+        <textarea id="f3e-scramble" data-f3e="scramble" rows="2" spellcheck="false" placeholder="e.g. Rw U F' 3Rw D R U2 B' Rw'" aria-describedby="f3e-help f3e-status"></textarea>
+        <div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-f3e="random">Random F3E case</button><button type="button" data-f3e="example">Try example</button><button type="button" data-f3e="reset">Reset solved</button></div>
+        <p class="help" id="f3e-help">U, F, D, B, 3Rw, Rw, R and L only; primes and doubles allowed. Each Apply starts from the solved reference with white on L and yellow on R. These moves preserve both centers. Random cases use short scrambles that reproduce thoroughly mixed white-wing states.</p>
+        <p id="f3e-status" data-f3e="status" role="status" aria-live="polite">Ready to apply a scramble and choose an F3E solution approach.</p>
+      </form>
+      <label class="practice-check f3e-focus"><input type="checkbox" data-f3e="highlight" checked>Highlight all four white edges and the L/R centers</label>
+      <div class="f3e-net" aria-label="Unfolded 4x4 cube, white left and yellow right">
+        <section class="f3e-net-u"><div class="face-label">U <span>Top</span></div><div class="face f3e-face" data-f3e-face="U" role="img"></div></section>
+        <section class="f3e-net-l"><div class="face-label">L <span>Left</span></div><div class="face f3e-face" data-f3e-face="L" role="img"></div></section>
+        <section class="f3e-net-f"><div class="face-label">F <span>Front</span></div><div class="face f3e-face" data-f3e-face="F" role="img"></div></section>
+        <section class="f3e-net-r"><div class="face-label">R <span>Right</span></div><div class="face f3e-face" data-f3e-face="R" role="img"></div></section>
+        <section class="f3e-net-b"><div class="face-label">B <span>Back</span></div><div class="face f3e-face" data-f3e-face="B" role="img"></div></section>
+        <section class="f3e-net-d"><div class="face-label">D <span>Down</span></div><div class="face f3e-face" data-f3e-face="D" role="img"></div></section>
+      </div>
+      <p class="preview-caption">Standard unfolded cube, with each face viewed from outside. Outlined wing stickers mark FL, DL and BL. The two wings in each edge must match, with white facing L.</p>
+    </div>
+    <section class="panel f3e-goal-panel" aria-labelledby="f3e-goal-heading">
+      <div class="f3e-search"><h3>F3E solver</h3><label>Solution approach<select data-f3e="mode" aria-describedby="f3e-mode-help"><option value="three-stage" selected>Three-stage (preserve solved edges)</option><option value="global">Globally optimal</option></select></label><p id="f3e-mode-help" data-f3e="mode-help">Solve the quickest first edge, then the quickest compatible second edge, then the third. Once an edge is solved, every later move must leave it solved in the same slot.</p><div class="solver-actions"><button type="button" class="primary" data-f3e="solve">Find solution</button><button type="button" data-f3e="cancel" hidden>Cancel</button></div><p id="f3e-search-note" class="help">Three-stage mode minimizes each stage while preserving earlier edges after every move; its total is not guaranteed globally optimal. Globally optimal minimizes the entire solution without those intermediate locks. U, F, D, B, 3Rw, Rw, R and L are allowed; primes and doubles each count as one move. No time or move limit; cancel any time.</p><div class="f3e-results" data-f3e="results"></div></div>
+      <div><h3 id="f3e-goal-heading">F3E goal</h3><p class="help">Pair three white edges at FL, DL and BL. Their side colors must follow the cube's color order.</p></div>
+      <p class="f3e-goal-status" data-f3e="goal" role="status"></p>
+      <ul class="f3e-checks"><li data-f3e="centers"></li><li data-f3e="paired"></li><li data-f3e="order"></li></ul>
+      <ul class="f3e-edges" data-f3e="edges" aria-label="Current target edges"></ul>
+      <div><h3>Valid relative orders</h3><p class="help">Any three of the four white edges may be used, including white-red. White faces L in every row; the remaining white edge is unrestricted. UL is not a target.</p></div>
+      <table class="f3e-orders"><caption>Side colors of the three paired white edges</caption><thead><tr><th scope="col">FL</th><th scope="col">DL</th><th scope="col">BL</th><th scope="col">Unrestricted edge</th></tr></thead><tbody>
+        <tr><td>Green</td><td>Orange</td><td>Blue</td><td>White-red</td></tr>
+        <tr><td>Orange</td><td>Blue</td><td>Red</td><td>White-green</td></tr>
+        <tr><td>Blue</td><td>Red</td><td>Green</td><td>White-orange</td></tr>
+        <tr><td>Red</td><td>Green</td><td>Orange</td><td>White-blue</td></tr>
+      </tbody></table>
+      <p class="help">For example, white-green at FL requires white-orange at DL and white-blue at BL. The other four centers and the corners do not need to be solved.</p>
+
+    </section>
+  </div>
+</section>
+
+<section id="l8e-solver" class="workspace-panel" role="tabpanel" aria-labelledby="tab-l8e" hidden>
+  <div class="view-heading"><div><h2>4x4 L8E</h2><p>Last eight edges: set up and inspect your cube.</p></div></div>
+  <section class="panel l8e-toolbox" aria-label="L8E algorithm options">
+      <label class="practice-check l8e-toolbox-toggle"><input type="checkbox" data-l8e="upper-algorithms">Include U-layer pairing algorithms (Rw / D / U2)</label>
+      <details class="quiet-details"><summary>Optional U-layer algorithms</summary><p class="help">Adds Rw2 D Rw' U2 Rw D' Rw' U2 Rw' and x Rw2 D2 Rw U2 Rw' D2 Rw U2 Lw, plus inverse and y-rotation variants, as complete blocks. Rw2' is equivalent to Rw2. These handle adjacent or opposite U-layer wings while restoring the centers and D cross and preserving E-layer wings at the block boundary. Each costs 9 face/wide turns; cube rotations cost zero. Available in both search modes. Optimality proofs apply to the selected toolbox.</p></details>
+    <p class="help">Enable these additional blocks for either heuristic or optimal block-cost search.</p>
+  </section>
+  <div class="solver-layout">
+    <div class="panel">
+      <form>
+        <label for="l8e-scramble">4x4 scramble</label>
+        <textarea id="l8e-scramble" data-l8e="scramble" rows="2" spellcheck="false" placeholder="Paste your scramble or setup moves" aria-describedby="l8e-help l8e-status"></textarea>
+        <div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-l8e="random">Random L8E case</button><button type="button" data-l8e="cancel" hidden>Cancel</button><button type="button" data-l8e="reset">Reset solved</button></div>
+        <p class="help" id="l8e-help">Face turns U, D, F, B, R, L and two- or three-layer wide turns (such as Rw and 3Rw); primes and doubles allowed. Each Apply starts from solved. The cross is on D (orange in the reference colors); random cases preserve it and all six centers. x, y and z cube rotations, including primes and doubles, are also accepted. These are drawing controls, not a solver move-set restriction.</p>
+        <p id="l8e-status" data-l8e="status" role="status" aria-live="polite">Showing the solved reference cube.</p>
+        <p class="help" data-l8e="constraints" role="status"></p>
+      </form>
+      <div class="f3e-net" aria-label="Unfolded 4x4 cube, all 96 stickers, white left and yellow right">
+<section class="f3e-net-u"><div class="face-label">U <span>Top</span></div><div class="face f3e-face" data-l8e-face="U" role="img"></div></section>
+<section class="f3e-net-l"><div class="face-label">L <span>Left</span></div><div class="face f3e-face" data-l8e-face="L" role="img"></div></section>
+<section class="f3e-net-f"><div class="face-label">F <span>Front</span></div><div class="face f3e-face" data-l8e-face="F" role="img"></div></section>
+<section class="f3e-net-r"><div class="face-label">R <span>Right</span></div><div class="face f3e-face" data-l8e-face="R" role="img"></div></section>
+<section class="f3e-net-b"><div class="face-label">B <span>Back</span></div><div class="face f3e-face" data-l8e-face="B" role="img"></div></section>
+<section class="f3e-net-d"><div class="face-label">D <span>Down</span></div><div class="face f3e-face" data-l8e-face="D" role="img"></div></section>
+      </div>
+      <p class="help">All stickers are shown in full color. Each face is viewed straight on; the back face is not mirrored.</p>
+    </div>
+    <section class="panel" aria-labelledby="l8e-search-heading">
+      <h3 id="l8e-search-heading">L8E conjugacy class</h3>
+      <p class="l8e-class" data-l8e="class" role="status" aria-live="polite"></p>
+      <p data-l8e="class-summary"></p>
+      <p class="help">Pairing cycle type: follow matching wings between dedge slots. A 2E group exchanges wings between two dedges; 8E is one cycle involving all eight. 1E means both wings already have the same edge colors. Groups are listed largest first.</p>
+      <ul class="l8e-cycles" data-l8e="cycles"></ul>
+      <details class="quiet-details"><summary>Wing pairs by slot</summary><div class="table-scroll"><table class="l8e-wing-table"><thead><tr><th scope="col">Slot</th><th scope="col">Wing 1 type</th><th scope="col">Wing 2 type</th><th scope="col">Pairing</th></tr></thead><tbody data-l8e="wing-rows"></tbody></table></div></details>
+      <p class="help">This class ignores wing orientation and the destination of a complete paired dedge. It describes edge pairing, not the full cube permutation or solution length. Centers and the D cross must be solved.</p>
+      <h3>L8E solution finder</h3>
+      <label>Search approach<select data-l8e="search-mode"><option value="heuristic" selected>Efficient pairing (heuristic)</option><option value="optimal">Optimal block cost (30 seconds)</option></select></label>
+      <p class="help">Optimal block-cost mode searches complete blocks exhaustively by their face/wide-turn cost: R U R' costs 3; U or Uw costs 1; primes and doubles have the same cost. Cube rotations cost 0. Costs are added before cancellations between blocks; the simplified algorithm's move count is shown separately. A result is called optimal only after all cheaper block sequences are ruled out. On timeout, any verified best solution is shown without an optimality claim.</p>
+      <div class="solver-actions"><button type="button" class="primary" data-l8e="solve">Find pairing solution</button><button type="button" data-l8e="search-cancel" hidden>Cancel search</button></div>
+      <p class="help">Heuristic search using AUFs, Uw slices, traditional U-turn inserts. Sledges are used only inside slice-flip-slice algorithms. Favors three-pair E-layer setups for slice / replace / unslice pairing, including slice-first starts. Slice-flip-slice variants handle difficult finishes. Back-face inserts are shown with y/y' rotations into R/L inserts, restoring the grip after each block. Rotations are reported separately from move count. Not guaranteed optimal.</p>
+      <p class="help">The D cross is preserved after each complete block; centers may be temporarily sliced. The finish restores all centers and pairs all eight dedges, without requiring their final 3x3 positions. Heuristic search stops after 30 seconds, 2 million visits or 40 blocks. Exact mode has a 30-second time budget, including candidate search, with no beam, visit or block-depth cutoff. Every result is replay-checked, and removable blocks are deleted.</p>
+      <div class="f3e-results" data-l8e="results"></div>
+      <p class="help">Apply a scramble to inspect the full cube. Random L8E cases use csTimer, with all six centers and the four orange cross edges on D solved and aligned. Corners are unrestricted. </p><p class="help">Generator: <a href="https://github.com/cs0x7f/cstimer">csTimer</a> (GPL-3.0). <a href="vendor/cstimer/LICENSE">License</a> and <a href="https://github.com/cs0x7f/cstimer/tree/89e884749d56d37b81cb15410504c3b9e8251b3b">corresponding source</a>.</p>
+    </section>
+  </div>
+</section>
+
+<section id="l8e-examples" class="workspace-panel" role="tabpanel" aria-labelledby="tab-l8e-examples" hidden>
+  <div class="view-heading"><div><h2>4x4 L8E examples</h2><p>Learn the pairing patterns behind every cycle class.</p></div></div>
+  <p class="help" data-l8e-examples="count"></p>
+  <p class="help">A cycle class describes matching wings, not their full placement or orientation. There is no single optimal algorithm for an entire class. These constructed training cases show useful plans; a proven minimum applies only to the displayed scramble and the allowed block toolbox.</p>
+  <div class="panel l8e-toolbox">
+    <label class="practice-check l8e-toolbox-toggle"><input type="checkbox" data-l8e-examples="upper-algorithms">Include U-layer pairing algorithms (Rw / D / U2)</label>
+    <p class="help">Compare precomputed solutions allowing the adjacent and opposite U-layer pairing algorithms, including inverse and y-rotation variants. Updates the solution, proof label and block previews. Allowing these blocks does not force their use.</p>
+  </div>
+  <div class="panel l8e-example-controls"><label>Cycle class<select data-l8e-examples="class"></select></label><label>Spatial subclass<select data-l8e-examples="subclass"></select></label><label>Example<select data-l8e-examples="example"></select></label><label>Solution to compare<select data-l8e-examples="solution"></select></label></div>
+  <div class="solver-layout">
+    <div class="panel">
+      <h3 data-l8e-examples="guide-title"></h3><p class="l8e-class" data-l8e-examples="signature"></p><p data-l8e-examples="guide"></p>
+      <h3>Starting spatial layout</h3><p data-l8e-examples="spatial-summary"></p><p data-l8e-examples="spatial-guide"></p><ul data-l8e-examples="spatial-components"></ul><ul data-l8e-examples="spatial-relations"></ul><p class="help" data-l8e-examples="coverage"></p>
+      <h3>Scramble</h3><code class="l8e-example-alg" data-l8e-examples="scramble"></code>
+      <button type="button" data-l8e-examples="load">Load in L8E solver</button>
+      <div class="f3e-net" aria-label="Example cube net, all six faces">
+<section class="f3e-net-u"><div class="face-label">U <span>Top</span></div><div class="face f3e-face" data-l8e-example-face="U" role="img"></div></section>
+<section class="f3e-net-l"><div class="face-label">L <span>Left</span></div><div class="face f3e-face" data-l8e-example-face="L" role="img"></div></section>
+<section class="f3e-net-f"><div class="face-label">F <span>Front</span></div><div class="face f3e-face" data-l8e-example-face="F" role="img"></div></section>
+<section class="f3e-net-r"><div class="face-label">R <span>Right</span></div><div class="face f3e-face" data-l8e-example-face="R" role="img"></div></section>
+<section class="f3e-net-b"><div class="face-label">B <span>Back</span></div><div class="face f3e-face" data-l8e-example-face="B" role="img"></div></section>
+<section class="f3e-net-d"><div class="face-label">D <span>Down</span></div><div class="face f3e-face" data-l8e-example-face="D" role="img"></div></section>
+      </div>
+      <div class="action-row"><button type="button" data-l8e-examples="start">Scrambled</button><button type="button" data-l8e-examples="previous">Previous block</button><button type="button" data-l8e-examples="next">Next block</button><button type="button" data-l8e-examples="finish">Paired</button></div>
+      <p data-l8e-examples="preview-status" role="status" aria-live="polite"></p>
+    </div>
+    <section class="panel" aria-label="Example solution">
+      <h3>Solution</h3><code class="l8e-example-alg" data-l8e-examples="algorithm"></code><p data-l8e-examples="proof"></p>
+      <p class="help">Block cost counts face/wide turns before cancellations between blocks. Rotations cost zero. Proofs apply to the selected toolbox. It is not global move optimality. Complete blocks preserve the D cross; centers can be sliced between blocks. Standalone sledges are excluded; flipping algorithms may contain them.</p>
+      <h3>What this example shows</h3><p data-l8e-examples="lesson"></p>
+      <h3>Pairing plan and previews</h3><ol class="l8e-example-steps" data-l8e-examples="steps"></ol>
     </section>
   </div>
 </section>

@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const {searchFour}=require('../four');
+const {searchFour,createFourModel}=require('../four');
 function element(){return {value:'',hidden:false,disabled:false,textContent:'',children:[],style:{},attrs:{},events:{},
  addEventListener(type,callback){this.events[type]=callback;},setAttribute(k,v){this.attrs[k]=v;},removeAttribute(k){delete this.attrs[k];},
  append(...nodes){this.children.push(...nodes);},replaceChildren(...nodes){this.children=nodes;}};}
@@ -14,6 +14,15 @@ const mount=vm.runInNewContext(fs.readFileSync(require.resolve('../four'),'utf8'
 mount({querySelector:()=>({querySelector:selector=>{assert.ok(nodes[selector],selector);return nodes[selector];}})});
 for(const f of ['U','F','D','B'])assert.equal(nodes[`[data-four-face="${f}"]`].children.length,4);
 nodes['[data-four="example"]'].events.click();
+const displayModel=createFourModel();
+const exampleState=displayModel.apply(displayModel.solved(),displayModel.parse(displayModel.example));
+for(const face of ['U','F','D','B']){
+ const visible=displayModel.visible(exampleState,face);
+ const expected=(face==='B'?[6,5,10,9]:[5,6,9,10]).map(i=>'piece '+visible[i]);
+ assert.deepEqual(nodes[`[data-four-face="${face}"]`].children.map(tile=>tile.className),expected);
+}
+assert.ok(nodes['[data-four-face="B"]'].attrs['aria-label'].includes('mirrored left/right'));
+
 for(const mode of ['global','half','first-center']){
  nodes['[data-four="mode"]'].value=mode;nodes['[data-four="mode"]'].events.change();
  assert.equal(nodes['.four-results'].children.length,0);

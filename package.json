@@ -1,0 +1,8 @@
+{
+  "name": "l2c-lab",
+  "private": true,
+  "scripts": {
+    "build": "python3 build.py",
+    "dev": "npm run build && node scripts/dev-server.cjs"
+  }
+}

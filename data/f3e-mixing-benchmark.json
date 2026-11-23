@@ -1,0 +1,94 @@
+{
+  "seed": 20261122,
+  "samples": 10000,
+  "internalMixingMoves": 96,
+  "displayedScramble": "Short inverse of four-edge restoration, preserving all sampled white wings",
+  "exactSingleEdgeOrbit": {
+    "states": 552,
+    "pairedStates": 24,
+    "expectedPairedWhiteEdges": 0.17391304347826086,
+    "expectedPairedTargetEdges": 0.021739130434782608
+  },
+  "old24": {
+    "samples": 10000,
+    "meanPairedWhiteEdgesAnywhere": 2.0765,
+    "meanPairedTargetEdges": 0.32,
+    "anyPairedTargetPercent": 29.22,
+    "meanWingsInOriginalSlot": 0.352,
+    "pairedEdgesHistogram": [
+      785,
+      2422,
+      3289,
+      2251,
+      1253
+    ]
+  },
+  "current": {
+    "samples": 10000,
+    "meanPairedWhiteEdgesAnywhere": 0.1782,
+    "meanPairedTargetEdges": 0.0207,
+    "anyPairedTargetPercent": 2.07,
+    "meanWingsInOriginalSlot": 0.3359,
+    "pairedEdgesHistogram": [
+      8358,
+      1505,
+      134,
+      3,
+      0
+    ]
+  },
+  "long1024": {
+    "samples": 10000,
+    "meanPairedWhiteEdgesAnywhere": 0.1773,
+    "meanPairedTargetEdges": 0.0223,
+    "anyPairedTargetPercent": 2.2,
+    "meanWingsInOriginalSlot": 0.3362,
+    "pairedEdgesHistogram": [
+      8346,
+      1535,
+      119,
+      0,
+      0
+    ]
+  },
+  "solutionLengths": {
+    "samplesPerGenerator": 100,
+    "seed": 20261122,
+    "old24": {
+      "global": {
+        "min": 2,
+        "max": 9,
+        "average": 5.87
+      },
+      "staged": {
+        "min": 2,
+        "max": 13,
+        "average": 7.66
+      }
+    },
+    "current": {
+      "global": {
+        "min": 6,
+        "max": 10,
+        "average": 8.59
+      },
+      "staged": {
+        "min": 7,
+        "max": 14,
+        "average": 10.96
+      }
+    },
+    "long1024": {
+      "global": {
+        "min": 6,
+        "max": 10,
+        "average": 8.66
+      },
+      "staged": {
+        "min": 8,
+        "max": 14,
+        "average": 11.2
+      }
+    }
+  }
+}

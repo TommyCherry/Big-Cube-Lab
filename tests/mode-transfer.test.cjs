@@ -9,7 +9,7 @@ const scramble = "3Lw F M' F M F' Lw' F M'";
 const initial = model.apply(model.solved(), model.parse(scramble));
 let state = initial;
 for (const mode of ['yau', 'redux', 'yau']) {
-  const url = new URL(transfer.url('http://localhost:8000/output/cube-centers.html?mode=redux#solver', mode, state, scramble + '\nU2 (unapplied draft)'));
+  const url = new URL(transfer.url('http://localhost:8001/output/cube-centers.html?mode=redux#solver', mode, state, scramble + '\nU2 (unapplied draft)'));
   assert.equal(url.searchParams.get('mode'), mode);
   assert.equal(url.hash, '#solver');
   assert.equal(url.searchParams.get('draft'), scramble + '\nU2 (unapplied draft)');

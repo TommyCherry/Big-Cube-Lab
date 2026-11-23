@@ -218,9 +218,11 @@ function mountFour(root) {
     for(const face of ['U','F','D','B']){
       const target=find(`[data-four-face="${face}"]`);target.replaceChildren();
       const visible=model.visible(state,face);
-      const colors=[5,6,9,10].map(index=>visible[index]);
-      for(const color of colors){const tile=document.createElement('div');tile.className='piece '+color;tile.setAttribute('aria-hidden','true');tile.style.background={gray:'#707985',green:'#23ad64',orange:'#ff8a26',blue:'#348bea',red:'#e25353'}[color];target.append(tile);}
-      target.setAttribute('aria-label',face+' center, rows left to right: '+colors.join(', '));
+      // Mirror B horizontally so cube-left bars align down the center strip.
+      const indices=face==='B'?[6,5,10,9]:[5,6,9,10];
+      const colors=indices.map(index=>visible[index]);
+      for(const color of colors){const tile=document.createElement('div');tile.className='piece '+color;tile.setAttribute('aria-hidden','true');target.append(tile);}
+      target.setAttribute('aria-label',face+' center'+(face==='B'?' (mirrored left/right)':'')+', rows left to right: '+colors.join(', '));
     }
   }
   function stop(){worker?.terminate();worker=null;find('[data-four="cancel"]').hidden=true;find('[data-four="solve"]').disabled=false;}
