@@ -14,7 +14,7 @@ _, after = rest.split(end, 1)
 before = before[:before.index('    const CubeModel =')] + (root / 'cube-model.js').read_text(encoding='utf-8')
 database = json.loads((root / 'data/l2c-cases.json').read_text(encoding='utf-8'))
 yau_database = json.loads((root / 'data/yau-cases.json').read_text(encoding='utf-8'))
-scripts = '\n'.join((root / name).read_text(encoding='utf-8') for name in ['orientation.js', 'solver.js', 'expanded-solver.js', 'case-library.js', 'case-browser.js', 'community-solutions.js', 'yau.js', 'trainer.js', 'workspace.js', 'mode-transfer.js', 'six-ida.js', 'six-cache.js', 'six-notation.js', 'six.js', 'four.js', 'f3e.js', 'f3e-search.js', 'l8e.js', 'l8e-search.js', 'l8e-spatial.js', 'l8e-examples.js'])
+scripts = '\n'.join((root / name).read_text(encoding='utf-8') for name in ['orientation.js', 'first-center.js', 'first-center-search.js', 'solver.js', 'expanded-solver.js', 'case-library.js', 'case-browser.js', 'community-solutions.js', 'yau.js', 'trainer.js', 'workspace.js', 'mode-transfer.js', 'six-ida.js', 'six-cache.js', 'six-notation.js', 'six.js', 'four.js', 'f3e.js', 'f3e-search.js', 'l8e.js', 'l8e-search.js', 'l8e-spatial.js', 'l8e-examples.js'])
 l8e_examples = json.loads((root / 'data/l8e-examples.json').read_text())
 if not all(group.get('subclasses') for group in l8e_examples['classes']):
     raise ValueError('Generate spatial examples with node scripts/generate-l8e-spatial-examples.cjs before building.')

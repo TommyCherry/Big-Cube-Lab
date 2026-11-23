@@ -1,7 +1,7 @@
 const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
 const source = fs.readFileSync(`${__dirname}/../workspace.js`, 'utf8');
 const layout = fs.readFileSync(`${__dirname}/../layout.html`, 'utf8');
-const tabs = ['solver-view', 'trainer', 'case-library', 'six-solver', 'four-solver', 'f3e-solver', 'l8e-solver', 'l8e-examples'].map(id => ({ dataset: { view: id }, attrs: {}, events: {}, setAttribute(k, v) { this.attrs[k] = v; }, addEventListener(k, fn) { this.events[k] = fn; }, focus() { this.focused = true; } }));
+const tabs = ['solver-view', 'trainer', 'case-library', 'six-solver', 'four-solver', 'f3e-solver', 'l8e-solver', 'l8e-examples', 'first-center'].map(id => ({ dataset: { view: id }, attrs: {}, events: {}, setAttribute(k, v) { this.attrs[k] = v; }, addEventListener(k, fn) { this.events[k] = fn; }, focus() { this.focused = true; } }));
 const panels = Object.fromEntries(tabs.map(t => [t.dataset.view, { hidden: false }]));
 const links = ['#trainer', '#case-library'].map(href => ({ events: {}, getAttribute() { return href; }, addEventListener(k, fn) { this.events[k] = fn; } }));
 const root = { dataset: {}, querySelectorAll: selector => selector === '[data-view]' ? tabs : links, querySelector: selector => panels[selector.slice(1)], scrollIntoView() {} };
@@ -23,6 +23,7 @@ workspace.show('four-solver'); assert.equal(location.hash, '#four'); assert.equa
 workspace.show('f3e-solver'); assert.equal(location.hash, '#f3e'); assert.equal(panels['f3e-solver'].hidden, false);
 assert.equal(panels['four-solver'].hidden,true);
 workspace.show('l8e-examples');assert.equal(location.hash,'#l8e-examples');assert.equal(panels['l8e-examples'].hidden,false);
+workspace.show('first-center');assert.equal(location.hash,'#first-center');assert.equal(panels['first-center'].hidden,false);
 for (const tab of tabs) assert.ok(layout.includes(`id="${tab.dataset.view}"`));
 assert.ok(layout.includes('class="cube-preview"'));
 console.log('Passed: independent views, deep links, keyboard tab navigation, and programmatic navigation.');

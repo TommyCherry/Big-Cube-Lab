@@ -14,6 +14,7 @@
   <div class="workspace-nav-group" role="presentation">
     <span class="workspace-nav-label" aria-hidden="true">5x5</span>
     <div class="workspace-nav-tabs" role="presentation">
+      <button type="button" id="tab-first-center" role="tab" aria-label="5x5 first center" aria-controls="first-center" aria-selected="false" tabindex="-1" data-view="first-center">First center</button>
       <button type="button" id="tab-solver" role="tab" aria-label="5x5 L2C solver" aria-controls="solver-view" aria-selected="true" data-view="solver-view">L2C solver</button>
       <button type="button" id="tab-trainer" role="tab" aria-label="5x5 L2C trainer" aria-controls="trainer" aria-selected="false" tabindex="-1" data-view="trainer">L2C trainer</button>
       <button type="button" id="tab-library" role="tab" aria-label="5x5 Case library" aria-controls="case-library" aria-selected="false" tabindex="-1" data-view="case-library">Case library</button>
@@ -278,6 +279,37 @@
       <p class="help">Block cost counts face/wide turns before cancellations between blocks. Rotations cost zero. Proofs apply to the selected toolbox. It is not global move optimality. Complete blocks preserve the D cross; centers can be sliced between blocks. Standalone sledges are excluded; flipping algorithms may contain them.</p>
       <h3>What this example shows</h3><p data-l8e-examples="lesson"></p>
       <h3>Pairing plan and previews</h3><ol class="l8e-example-steps" data-l8e-examples="steps"></ol>
+    </section>
+  </div>
+</section>
+
+<section id="first-center" class="workspace-panel" role="tabpanel" aria-labelledby="tab-first-center" hidden>
+  <div class="view-heading"><div><h2>5x5 first center</h2><p>Find a globally shortest first center, or build it with optimal bar and block stages.</p></div></div>
+  <div class="solver-layout">
+    <div class="panel">
+      <form><label>5x5 scramble<textarea data-first-center="scramble" rows="3" placeholder="e.g. Rw U Fw Rw2 U' Fw2" spellcheck="false"></textarea></label><div class="action-row"><button type="submit" class="primary">Apply scramble</button><button type="button" data-first-center="random">Random scramble</button><button type="button" data-first-center="reset">Reset</button></div></form>
+      <p class="help">Outer and two-layer wide turns only; primes and doubles allowed. Apply starts from solved. Random scrambles use 60 turns with alternating axes.</p>
+      <p data-first-center="preview-status" role="status">Scrambled state.</p>
+      <div class="f3e-net first-center-net" aria-label="5x5 cube net">
+        <section class="f3e-net-u"><div class="face-label">U</div><div class="face first-center-face" data-first-face="U" role="img"></div></section>
+        <section class="f3e-net-l"><div class="face-label">L</div><div class="face first-center-face" data-first-face="L" role="img"></div></section>
+        <section class="f3e-net-f"><div class="face-label">F</div><div class="face first-center-face" data-first-face="F" role="img"></div></section>
+        <section class="f3e-net-r"><div class="face-label">R</div><div class="face first-center-face" data-first-face="R" role="img"></div></section>
+        <section class="f3e-net-b"><div class="face-label">B</div><div class="face first-center-face" data-first-face="B" role="img"></div></section>
+        <section class="f3e-net-d"><div class="face-label">D</div><div class="face first-center-face" data-first-face="D" role="img"></div></section>
+      </div>
+    </div>
+    <section class="panel">
+      <h3>First-center search</h3>
+      <div class="first-center-options">
+        <label>Center colors<select data-first-center="colors"><optgroup label="Single color"><option value="white">White</option><option value="yellow">Yellow</option><option value="green">Green</option><option value="blue">Blue</option><option value="red">Red</option><option value="orange">Orange</option></optgroup><optgroup label="Dual color neutral"><option value="white/yellow">White / yellow</option><option value="green/blue">Green / blue</option><option value="red/orange">Red / orange</option></optgroup><option value="all">Full color neutral (all six)</option></select></label>
+        <label>Approach<select data-first-center="method"><option value="optimal">Globally optimal (no stages)</option><option value="both" selected>Compare bars and blocks</option><option value="bars">Center bar, then two side bars</option><option value="block">2x2, then 2x3, then last bar</option></select></label>
+        <label>Search time budget<select data-first-center="time"><option value="30">30 seconds</option><option value="120">2 minutes</option><option value="600">10 minutes</option></select></label>
+      </div>
+      <div class="action-row"><button type="button" class="primary" data-first-center="solve">Find solutions</button><button type="button" data-first-center="cancel" hidden>Cancel</button></div>
+      <p data-first-center="status" role="status" aria-live="polite">Apply a scramble or generate a random case.</p>
+      <details class="quiet-details"><summary>What is optimal?</summary><p class="help">Globally optimal searches directly for all nine center stickers solved, without requiring intermediate bars or blocks. For dual or full CN, it proves the shortest solution across the selected colors using a shared increasing move bound. Moves that leave all of the chosen color's center positions unchanged are skipped. Other colors are unrestricted. A timeout is not a proof; increase the budget to continue with a new search.</p><p class="help">Each stage uses an exact shortest-path search with outer and two-layer wide turns; a prime or double counts as one move. The first stage considers both center-bar orientations or all four 2x2 blocks around the fixed center. Extensions must include the completed shape. Earlier work can move temporarily but must be restored at the next stage boundary. Each color is solved on its fixed-center face in the displayed grip.</p><p class="help">Ties use the first shortest route found, so later stages can differ from other equally short starts. We compare total stage move counts across the selected colors and methods, without cancellation across stage boundaries. The best completed staged route is not necessarily globally move optimal. A timeout leaves the color-neutral comparison incomplete.</p></details>
+      <div data-first-center="results"></div>
     </section>
   </div>
 </section>

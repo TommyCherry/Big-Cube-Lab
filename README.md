@@ -4,7 +4,8 @@ A browser-based lab for center solving, edge pairing, and practice on 4x4, 5x5, 
 
 - 4x4 Yau L4C and F3E solvers, L8E pairing, and example solutions by cycle class.
 
-- 5x5 case library, pattern filters, and optimal algorithms.
+- 5x5 first-center solver with global optimal search or staged bars/blocks, and single, dual, or full color neutrality.
+- 5x5 L2C case library, pattern filters, and optimal algorithms.
 - Trainer with saved sessions, timing, and spaced repetition.
 - Redux and Yau modes; Yau preserves FL, DL, and BL edges.
 - 6x6 move-optimal and ergonomic searches, random cases, and last-bar filters.
@@ -438,3 +439,58 @@ Expanded-toolbox proofs are computed separately; a basic proof is never reused
 as an expanded proof. Some routes remain unchanged when the extra blocks do not
 improve the found solution. Loading an example into the solver carries over the
 selected toolbox.
+
+
+## 5x5 first center
+
+Open **5x5 > First center** (`#first-center`). Apply an outer/wide-turn scramble
+or generate a 60-turn scramble. Select a single center color, one of the three
+opposite-color pairs, or all six colors; the global orientation controls recolor
+both the selection labels and cube consistently.
+
+Choose **Globally optimal (no stages)** to find the shortest complete first-center
+solution directly. Dual/full CN use a shared iterative move bound across every
+selected color: the first solution proves the minimum over that color set,
+without having to finish each harder color. The result shows the winning color
+and one complete solution preview. All turns cost one, including doubles;
+the move set is outer and two-layer wide turns, with the center solved on its
+fixed-center face in the displayed grip.
+
+The optimal search tracks only the selected color's eight movable center pieces.
+Moves leaving both center-orbit occupancy masks unchanged are pruned: changes to
+other colors cannot help this objective. Identical-piece exchanges are also
+irrelevant. Exact single-orbit distances give admissible bounds. Same-generator
+and commuting-axis turn pruning removes redundant paths, while a bounded failed
+state cache includes the previous generator to preserve that pruning context.
+Timeouts return no optimality claim. The status reports search visits and pruned
+unchanged-color moves.
+
+Alternatively, two greedy three-stage methods are available, individually or together:
+
+- Center bar (either orientation), then either side bar, then the last bar.
+- Any 2x2 block around the fixed center, then an enclosing 2x3 rectangle, then
+  the last bar.
+
+Every stage is shortest under outer and two-layer wide turns, with primes and
+doubles costing one turn. Earlier shapes must be included at the next stage
+boundary, but can move temporarily during a sequence. Centers finish on their
+fixed-center face in the displayed grip. The search uses IDA* with exact
+single-orbit pattern databases for the four diagonal and four axial center
+pieces. These admissible bounds do not prune a possible shorter stage solution.
+
+The first shortest path wins a stage tie. Completed routes are ranked by the sum
+of stage lengths across the selected colors and methods. This does not prove a
+globally shortest center solution or the best continuation among all tied stage
+paths. Stage boundaries are retained, without cross-stage cancellation. A time
+limit marks the comparison incomplete; it never claims a full CN comparison.
+Search runs in a cancellable worker, and every completed stage is independently
+replayed on the full sticker model before display. Previews show each stage.
+
+Validation: `node tests/first-center.test.cjs` checks independent BFS optima,
+all six colors, both methods, random scrambles and full replay;
+`node tests/first-center-ui.test.cjs` checks the serialized worker, color modes,
+previews, cancellation, stale results and timeouts.
+
+`node tests/first-center-optimal.test.cjs` compares global results with an
+independent unpruned breadth-first oracle, checks single/dual/full CN minima,
+replays random cases, compares against staged routes, and verifies timeouts.
