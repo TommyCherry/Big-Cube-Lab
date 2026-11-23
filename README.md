@@ -108,19 +108,53 @@ python3 build.py
 ## 4x4 L4C Yau prototype
 
 Open the **4x4 L4C Yau** tab (or `/#four`). Input accepts only `Rw`, `3Rw`,
-`U`, primes, and doubles; each costs one move. All these turns preserve the
+`l`, `U`, primes, and doubles; each costs one move. All these turns preserve the
 L/R centers and every FL/DL/BL edge piece.
 
-Phase 1 targets the correct-color cube-left bars on F, D, and B. Phase 2 uses
-Rw/U only, preserving those bars. The prototype builds the exact 18,900-state
-phase-2 distance table and searches prefixes in increasing **total** solution
-length, using admissible single-color bounds. It considers different phase-1
-endpoints rather than greedily accepting the shortest first phase. Either phase
-can be empty; a full optimal solution can also be the phase-1 prefix, so the
-search does not exclude shorter solutions that do not enter phase 2 earlier.
+Choose one of three solution approaches:
 
-Returned solutions are shortest within this nine-turn move set, not all cube
-moves. Time/depth limits return an incomplete result, never an optimality claim.
-The worker keeps the interface responsive and can be cancelled. Use the phase
-preview buttons to inspect the three bars and the solved result. This is an
-initial implementation, without a case library or deep-case performance guarantee.
+- **Half centers:** find a shortest route to the cube-left bars on F, D and B in
+  any of the four cyclic color arrangements around the fixed L/R axis, then the
+  shortest Rw/U finish to that rotated solved state, preserving the bars. The
+  resulting face colors are shown with the solution. Arbitrary color swaps or
+  reversed color order are not accepted.
+- **Full 1st center:** solve one full center in its original face position in the
+  fewest moves, then find the shortest unrestricted finish from that endpoint.
+  The solver automatically chooses whichever of U, F, D or B is quickest. An already solved
+  center needs zero first-stage moves. The finish may temporarily disturb it.
+- **Globally optimal** (the default): minimize total moves over the whole solution,
+  to the original face colors, without requiring a half-center or full-center
+  milestone first.
+
+The staged modes select the first shortest stage-1 route found; ties are not
+ranked by finish length. They guarantee a shortest first stage and a shortest
+finish from the selected endpoint, not a globally shortest combined solution.
+Stage boundaries are retained when reporting move counts and previews.
+
+The solver builds an exact Rw/U finish table (18,900 states per solved
+orientation, 75,600 for Half centers) and single-color pattern distances. Half-center search uses admissible distances to partial color targets;
+first-center search uses the minimum exact distance to an eligible solved center.
+The global search uses increasing total-move bounds and admissible single-color
+bounds. Its finish-table shortcut does not force an early phase boundary: either
+part can be empty, so it can find a full solution entirely in the search prefix.
+
+Optimality is within the twelve-turn Rw/3Rw/l/U move set, not all cube moves.
+The interface has no time or move limit. Cancel terminates the worker without an
+optimality claim. Changing the approach cancels any
+running search and clears the previous results. Optional internal limits remain
+available for tests and benchmarks. This is an initial implementation, without a
+case library or deep-case performance guarantee.
+
+## Roadmap ideas
+
+- **4x4 Yau L8E conjugacy class classifier.**
+- **4x4 L8E optimal solver** constrained to AUFs and traditional inserts, with
+  optional support later for additional algorithms such as
+  `Rw2 D Rw' U2 Rw D' Rw' U2 Rw'` and commutators.
+- **4x4 Yau solver with per-step optimality**, including steps such as F3E.
+- **OPA-aware L4C solver** that factors OPA into the search.
+- **5x5 F2C optimal solution finder.**
+
+- **"Optimal human-findable" L4C solutions** that account for what a solver can
+  reasonably recognize as centers enter their field of view, including which
+  center adjustments they can identify to preserve a bar.
